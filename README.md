@@ -63,6 +63,6 @@ node --env-file=.env build-vector-index.js
 node --env-file=.env generate-response.js
 ```
 
-#### c. Repeat the current step if you want to change the question or search query parameters.
+#### c. Repeat the current step if you want to ask a new question or change search query parameters.
 
-#### d. Repeat step 2 if you want to update the data you want the chatbot to answer from.
+#### d. Repeat step 2 if you want to change the data or data settings for the chatbot to answer from.
