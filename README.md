@@ -53,7 +53,7 @@ Run the following command to create the vector index in Atlas.
 node --env-file=.env build-vector-index.js
 ```
 
-### 4. Ask a question and get a response from the chatbot.
+### 4. Ask a question, retrieve vector search results, and get a response from the chatbot
 
 #### a. Open `generate-response.js` and replace values for `QUESTION`, `NUM_CANDIDATES`, `EXACT`, `LIMIT` as required.
 
