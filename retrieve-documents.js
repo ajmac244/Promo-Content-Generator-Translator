@@ -1,13 +1,8 @@
 import { MongoClient } from 'mongodb';
 import { getEmbedding } from './get-embeddings.js';
 
-
-const NUM_CANDIDATES = 40;
-const EXACT = false;
-const LIMIT = 5;
-
 // Function to get the results of a vector query
-export async function getQueryResults(query) {
+export async function getQueryResults(query, numCandidates, exact, limit) {
   // Connect to your Atlas cluster
   const client = new MongoClient(process.env.ATLAS_CONNECTION_STRING);
 
@@ -23,9 +18,9 @@ export async function getQueryResults(query) {
           index: "vector_index",
           queryVector: queryEmbedding,
           path: "vector_embeddings",
-          numCandidates: NUM_CANDIDATES,
-          exact: EXACT,
-          limit: LIMIT,
+          numCandidates,
+          exact,
+          limit,
         }
       },
       {

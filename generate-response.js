@@ -4,9 +4,14 @@ import { Anthropic } from "@anthropic-ai/sdk";
 // Specify the question ask
 const QUESTION = "What did the old man catch?";
 
+// Specify the search query parameters
+const NUM_CANDIDATES = 40;
+const EXACT = false;
+const LIMIT = 5;
+
 async function run() {
   try {
-    const documents = await getQueryResults(QUESTION);
+    const documents = await getQueryResults(QUESTION, NUM_CANDIDATES, EXACT, LIMIT);
 
     // Create a prompt consisting of the question and context to pass to the LLM
     const prompt = `A text is split into several chunks and you are provided a subset of these chunks as context to answer the question at the end.

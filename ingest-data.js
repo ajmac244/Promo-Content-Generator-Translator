@@ -10,6 +10,9 @@ const PDF_FILE = `oldmansea.pdf`;
 const CHUNK_SIZE = 250;
 const CHUNK_OVERLAP = 50;
 
+// Specify the voyage embedding model
+const EMBEDDING_MODEL = "voyage-3-large";
+
 async function run() {
   const client = new MongoClient(process.env.ATLAS_CONNECTION_STRING);
   try {
@@ -26,11 +29,14 @@ async function run() {
     await client.connect();
     const db = client.db("rag_db");
     const collection = db.collection("test");
+    console.log("Clearing your collection of any pre-existing data.");
+    const deleteResult = await collection.deleteMany({});
+    console.log("Deleted " + deleteResult.deletedCount + " documents");
     console.log("Generating embeddings and inserting documents...");
     const insertDocuments = [];
     await Promise.all(docs.map(async (doc, index) => {
       // Generate embeddings using the function that you defined
-      const embedding = await getEmbedding(doc.pageContent);
+      const embedding = await getEmbedding(doc.pageContent, EMBEDDING_MODEL);
       // Add the document with the embedding to array of documents for bulk insert
       insertDocuments.push({
         _id: index,
