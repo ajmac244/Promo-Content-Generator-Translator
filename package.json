@@ -1,0 +1,29 @@
+{
+  "name": "chatbot-demo-builder-starter-npm",
+  "version": "1.0.0",
+  "description": "This Node.js project contains scripts you can run or refer to as starter code for your chatbot application.",
+  "main": "ingest-data.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mongodb-developer/atlas-search-playground-chatbot-starter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mongodb-developer/atlas-search-playground-chatbot-starter/issues"
+  },
+  "type": "module",
+  "homepage": "https://github.com/mongodb-developer/atlas-search-playground-chatbot-starter#readme",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.1",
+    "@langchain/community": "^0.3.48",
+    "langchain": "^0.3.29",
+    "mongodb": "^6.17.0",
+    "pdf-parse": "^1.1.1",
+    "voyageai": "^0.0.4"
+  }
+}

@@ -2,7 +2,7 @@ import { getQueryResults } from './retrieve-documents.js';
 import { Anthropic } from "@anthropic-ai/sdk";
 
 // Specify the question ask
-const QUESTION = "What did the old man catch?";
+const QUESTION = "What are the open hours for Emerald Valley State Park?";
 
 // Specify the search query parameters
 const NUM_CANDIDATES = 40;

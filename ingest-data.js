@@ -4,7 +4,7 @@ import { MongoClient } from 'mongodb';
 import { getEmbedding } from './get-embeddings.js';
 
 // Specify the pdf file name
-const PDF_FILE = `oldmansea.pdf`;
+const PDF_FILE = `sample_pdf.pdf`;
 
 // Specify the chunking params
 const CHUNK_SIZE = 250;
