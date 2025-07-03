@@ -14,33 +14,38 @@ This Node.js project contains scripts you can run or refer to as starter code fo
 
 ## Procedure
 
-1. Set up the environment
+### 1. Set up the environment
 
-a. Install dependencies
+#### a. Install dependencies
+
 Run the following npm command
 ```shell
 npm install
 ```
 
-b. Update the values in the `.env` file.
+#### b. Update the values in the `.env` file.
 
 Fill in the API keys for Voyage AI and Anthropic.
 
-Your connection string should use the following format: `mongodb+srv://<db_username>:<db_password>@<clusterName>.<hostname>.mongodb.net`
+Your connection string should use the following format:
 
-2. Create the database and collection and populate it with the data from your PDF
+```shell
+mongodb+srv://<db_username>:<db_password>@<clusterName>.<hostname>.mongodb.net
+```
 
-a. Copy your PDF into the directory.
+### 2. Create the database and collection and populate it with the data from your PDF
 
-b. Open `ingest-data.js` and replace values for `PDF_FILE`, `CHUNK_SIZE`, `CHUNK_OVERLAP`, `EMBEDDING_MODEL` as desired.
+#### a. Copy your PDF into the directory.
 
-c. Run the following command.
+#### b. Open `ingest-data.js` and replace values for `PDF_FILE`, `CHUNK_SIZE`, `CHUNK_OVERLAP`, `EMBEDDING_MODEL` as required.
+
+#### c. Run the following command.
 
 ```shell
 node --env-file=.env ingest-data.js
 ```
 
-3. Create the vector index
+### 3. Create the vector index
 
 Run the following command to create the vector index in Atlas.
 
@@ -48,14 +53,16 @@ Run the following command to create the vector index in Atlas.
 node --env-file=.env build-vector-index.js
 ```
 
-4. Ask a question and get a response from the chatbot.
+### 4. Ask a question and get a response from the chatbot.
 
-a. Open `generate-response.js` and replace values for `QUESTION`, `NUM_CANDIDATES`, `EXACT`, `LIMIT` as desired.
+#### a. Open `generate-response.js` and replace values for `QUESTION`, `NUM_CANDIDATES`, `EXACT`, `LIMIT` as required.
 
-b. Run the following command.
+#### b. Run the following command.
 
 ```shell
 node --env-file=.env generate-response.js
 ```
 
-c. Repeat step 2 if you want to make changes to the data you want the chatbot to answer from.
+#### c. Repeat the current step if you want to change the question or search query parameters.
+
+#### d. Repeat step 2 if you want to update the data you want the chatbot to answer from.
