@@ -21,6 +21,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.1",
     "@langchain/community": "^0.3.48",
+    "js-tiktoken": "^1.0.20",
     "langchain": "^0.3.29",
     "mongodb": "^6.17.0",
     "pdf-parse": "^1.1.1",
