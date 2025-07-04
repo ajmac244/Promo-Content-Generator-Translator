@@ -7,7 +7,7 @@ const client = new VoyageAIClient({apiKey: process.env.VOYAGE_API_KEY});
 export async function getEmbedding(text, model) {
   const results = await client.embed({
     input: text,
-    model
+    model: "voyage-3-large",
   });
   return results.data[0].embedding;
 }

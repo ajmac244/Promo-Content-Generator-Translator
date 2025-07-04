@@ -2,6 +2,7 @@ import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 import { MongoClient } from 'mongodb';
 import { getEmbedding } from './get-embeddings.js';
+import { getEncoding } from 'js-tiktoken';
 
 // Specify the pdf file name
 const PDF_FILE = `sample_pdf.pdf`;
@@ -10,8 +11,12 @@ const PDF_FILE = `sample_pdf.pdf`;
 const CHUNK_SIZE = 250;
 const CHUNK_OVERLAP = 50;
 
-// Specify the voyage embedding model
-const EMBEDDING_MODEL = "voyage-3-large";
+// Counts number of tokens in a given string.
+const encoding = getEncoding('gpt2');
+
+export const getTokenCount = (text) => {
+  return encoding.encode(text).length;
+};
 
 async function run() {
   const client = new MongoClient(process.env.ATLAS_CONNECTION_STRING);
@@ -22,6 +27,7 @@ async function run() {
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: CHUNK_SIZE,
       chunkOverlap: CHUNK_OVERLAP,
+      lengthFunction: getTokenCount,
     });
     const docs = await textSplitter.splitDocuments(data);
     console.log(`Successfully chunked the PDF into ${docs.length} documents.`);
@@ -36,7 +42,7 @@ async function run() {
     const insertDocuments = [];
     await Promise.all(docs.map(async (doc, index) => {
       // Generate embeddings using the function that you defined
-      const embedding = await getEmbedding(doc.pageContent, EMBEDDING_MODEL);
+      const embedding = await getEmbedding(doc.pageContent);
       // Add the document with the embedding to array of documents for bulk insert
       insertDocuments.push({
         _id: index,

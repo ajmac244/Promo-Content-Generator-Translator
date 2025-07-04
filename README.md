@@ -37,7 +37,7 @@ mongodb+srv://<db_username>:<db_password>@<clusterName>.<hostname>.mongodb.net
 
 #### a. Copy your PDF into the directory.
 
-#### b. Open `ingest-data.js` and replace values for `PDF_FILE`, `CHUNK_SIZE`, `CHUNK_OVERLAP`, `EMBEDDING_MODEL` as required.
+#### b. Open `ingest-data.js` and replace values for `PDF_FILE`, `CHUNK_SIZE`, `CHUNK_OVERLAP` as required.
 
 #### c. Run the following command.
 

@@ -2,7 +2,7 @@ import { getQueryResults } from './retrieve-documents.js';
 import { Anthropic } from "@anthropic-ai/sdk";
 
 // Specify the question ask
-const QUESTION = "What are the open hours for Emerald Valley State Park?";
+const QUESTION = "<Enter your question here>";
 
 // Specify the search query parameters
 const NUM_CANDIDATES = 40;
@@ -32,8 +32,7 @@ async function run() {
         },
       ],
     });
-
-    console.log(answer[0].text);
+    console.log(answer.content[0].text);
   } catch (err) {
     console.log(err.stack);
   }
