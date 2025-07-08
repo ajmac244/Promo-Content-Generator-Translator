@@ -1,7 +1,7 @@
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 import { MongoClient } from 'mongodb';
-import { getEmbedding } from './get-embeddings.js';
+import { getEmbeddings } from './get-embeddings.js';
 import { getEncoding } from 'js-tiktoken';
 
 // Specify the pdf file name
@@ -39,18 +39,13 @@ async function run() {
     const deleteResult = await collection.deleteMany({});
     console.log("Deleted " + deleteResult.deletedCount + " documents");
     console.log("Generating embeddings and inserting documents...");
-    const insertDocuments = [];
-    await Promise.all(docs.map(async (doc, index) => {
-      // Generate embeddings using the function that you defined
-      const embedding = await getEmbedding(doc.pageContent);
-      // Add the document with the embedding to array of documents for bulk insert
-      insertDocuments.push({
-        _id: index,
-        text: doc.pageContent,
-        vector_embeddings: embedding,
-        page_number: doc.metadata.loc.pageNumber,
-      });
-    }))
+    const embeddings = await getEmbeddings(docs.map(doc => doc.pageContent));
+    const insertDocuments = docs.map((doc, index) => ({
+      _id: index,
+      text: doc.pageContent,
+      vector_embeddings: embeddings[index],
+      page_number: doc.metadata.loc.pageNumber,
+    }));
     // Continue processing documents if an error occurs during an operation
     const options = { ordered: false };
     // Insert documents with embeddings into Atlas

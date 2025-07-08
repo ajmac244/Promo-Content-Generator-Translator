@@ -12,6 +12,9 @@ const LIMIT = 5;
 async function run() {
   try {
     const documents = await getQueryResults(QUESTION, NUM_CANDIDATES, EXACT, LIMIT);
+    
+    // Uncomment below line to print out retrieved documents
+    // console.log('Retrieved documents: ', documents);
 
     // Create a prompt consisting of the question and context to pass to the LLM
     const prompt = `A text is split into several chunks and you are provided a subset of these chunks as context to answer the question at the end.
@@ -21,6 +24,7 @@ async function run() {
       Context: ${documents.map(doc => doc.text)}
       Question: ${QUESTION}`;
 
+    // Substitute with your favorite LLM service provider as needed
     const anthropic = new Anthropic();
     const answer = await anthropic.messages.create({
       model: "claude-opus-4-20250514",

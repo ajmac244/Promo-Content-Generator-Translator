@@ -12,6 +12,8 @@ This Node.js project contains scripts you can run or refer to as starter code fo
 - A Voyage AI API key. https://docs.voyageai.com/docs/api-key-and-installation
 - An Anthropic API key. https://docs.anthropic.com/en/api/admin-api/apikeys/get-api-key
 
+Note: You may use alternate embeddings and LLM service providers given that you can implement them yourself in this starter code. 
+
 ## Procedure
 
 ### 1. Clone the repo
@@ -70,3 +72,5 @@ node --env-file=.env generate-response.js
 #### c. Repeat the current step if you want to ask a new question or change search query parameters.
 
 #### d. Repeat step 3 if you want to change the data or data settings for the chatbot to answer from.
+
+#### e. Uncomment line 17 to display the documents retrieved from running vector search.
