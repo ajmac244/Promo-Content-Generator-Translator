@@ -14,7 +14,9 @@ This Node.js project contains scripts you can run or refer to as starter code fo
 
 ## Procedure
 
-### 1. Clone the repository 
+### 1. Clone the repo
+
+Create a copy of the repository on your machine.
 
 ### 2. Set up the environment
 
