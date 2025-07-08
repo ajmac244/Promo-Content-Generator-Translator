@@ -14,9 +14,11 @@ This Node.js project contains scripts you can run or refer to as starter code fo
 
 ## Procedure
 
-### 1. Set up the environment
+### 1. Clone the repository 
 
-#### a. Install dependencies
+### 2. Set up the environment
+
+#### a. Install dependencies.
 
 Run the following npm command
 ```shell
@@ -33,7 +35,7 @@ Your connection string should use the following format:
 mongodb+srv://<db_username>:<db_password>@<clusterName>.<hostname>.mongodb.net
 ```
 
-### 2. Create the database and collection and populate it with the data from your PDF
+### 3. Create the database and collection and populate it with the data from your PDF
 
 #### a. Copy your PDF into the directory.
 
@@ -45,7 +47,7 @@ mongodb+srv://<db_username>:<db_password>@<clusterName>.<hostname>.mongodb.net
 node --env-file=.env ingest-data.js
 ```
 
-### 3. Create the vector index
+### 4. Create the vector index
 
 Run the following command to create the vector index in Atlas.
 
@@ -53,7 +55,7 @@ Run the following command to create the vector index in Atlas.
 node --env-file=.env build-vector-index.js
 ```
 
-### 4. Ask a question, retrieve vector search results, and get a response from the chatbot
+### 5. Ask a question, retrieve vector search results, and get a response from the chatbot
 
 #### a. Open `generate-response.js` and replace values for `QUESTION`, `NUM_CANDIDATES`, `EXACT`, `LIMIT` as required.
 
@@ -65,4 +67,4 @@ node --env-file=.env generate-response.js
 
 #### c. Repeat the current step if you want to ask a new question or change search query parameters.
 
-#### d. Repeat step 2 if you want to change the data or data settings for the chatbot to answer from.
+#### d. Repeat step 3 if you want to change the data or data settings for the chatbot to answer from.
