@@ -1,18 +1,6 @@
 # Promo Content Generator & Translator
 
-This Node.js project contains scripts you can run or refer to as starter code for your chatbot application.
-
-## Prerequisites
-
-- A terminal and code editor to run your Node.js project.
-- npm and Node.js installed. https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
-- Log in or create a free Atlas account. https://account.mongodb.com/account/register?tck=docs_atlas
-- If you don't have an Atlas cluster, create a free M0 cluster. https://cloud.mongodb.com/go?l=https%3A%2F%2Fcloud.mongodb.com%2Fv2%2F%3Cproject%3E%23clusters%2Fedit%3Ffrom%3DctaClusterHeader
-- Get your MongoDB Atlas connection string by clicking the “Connect” button on your cluster in the Atlas UI. https://www.mongodb.com/docs/manual/reference/connection-string/#find-your-mongodb-atlas-connection-string
-- A Voyage AI API key. https://docs.voyageai.com/docs/api-key-and-installation
-- An Anthropic API key. https://docs.anthropic.com/en/api/admin-api/apikeys/get-api-key
-
-Note: You may use alternate embeddings and LLM service providers given that you can implement them yourself in this starter code. 
+A Node.js app for betting & gaming companies that uses OpenAI to extract structured data from legal promo text, generate Handlebars templates for banners/widgets, translate content into multiple languages, and find similar promos with MongoDB Atlas Vector Search. Includes a simple web UI for demo and experimentation.
 
 ## Environment Variables
 
@@ -23,63 +11,26 @@ OPENAI_API_KEY=your-openai-key-here
 MONGODB_URI=your-mongodb-uri-here
 ```
 
-## Procedure
+## Setup
 
-### 1. Clone the repo
+1. Install dependencies:
+   ```sh
+   npm install
+   ```
+2. (Optional) Populate with mock data:
+   ```sh
+   npm run populate-mock
+   ```
+3. Start the server:
+   ```sh
+   node chatbot-server.js
+   ```
+4. Open [http://localhost:3001](http://localhost:3001) in your browser.
 
-Create a copy of the repository on your machine.
+## Notes
+- This project uses **OpenAI** for all AI features (extraction, template generation, translation, embeddings).
+- MongoDB Atlas is used for storage and vector search.
+- No Anthropic or Voyage integration is included.
 
-### 2. Set up the environment
-
-#### a. Install dependencies.
-
-Run the following npm command
-```shell
-npm install
-```
-
-#### b. Update the values in the `.env` file.
-
-Fill in the API keys for Voyage AI and Anthropic.
-
-Your connection string should use the following format:
-
-```shell
-mongodb+srv://<db_username>:<db_password>@<clusterName>.<hostname>.mongodb.net
-```
-
-### 3. Create the database and collection and populate it with the data from your PDF
-
-#### a. Copy your PDF into the directory.
-
-#### b. Open `ingest-data.js` and replace values for `PDF_FILE`, `CHUNK_SIZE`, `CHUNK_OVERLAP` as required.
-
-#### c. Run the following command.
-
-```shell
-node --env-file=.env ingest-data.js
-```
-
-### 4. Create the vector index
-
-Run the following command to create the vector index in Atlas.
-
-```shell
-node --env-file=.env build-vector-index.js
-```
-
-### 5. Ask a question, retrieve vector search results, and get a response from the chatbot
-
-#### a. Open `generate-response.js` and replace values for `QUESTION`, `NUM_CANDIDATES`, `EXACT`, `LIMIT` as required.
-
-#### b. Run the following command.
-
-```shell
-node --env-file=.env generate-response.js
-```
-
-#### c. Repeat the current step if you want to ask a new question or change search query parameters.
-
-#### d. Repeat step 3 if you want to change the data or data settings for the chatbot to answer from.
-
-#### e. Uncomment line 17 to display the documents retrieved from running vector search.
+## License
+MIT
