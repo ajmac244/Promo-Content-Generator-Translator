@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promo Content Generator & Translator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-section {
+            margin-bottom: 30px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .results {
+            margin-top: 30px;
+        }
+        .result-section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        .result-section h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .json-display {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        .template-display {
+            background: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Promo Content Generator & Translator</h1>
+        
+        <div class="input-section">
+            <h3>📝 Paste Legal Promo Text</h3>
+            <textarea id="promoInput" placeholder="Paste your legal promo text here...&#10;&#10;Example:&#10;Eligible players in New York and New Jersey who place a minimum bet of $50 on any sporting event on July 4th, 2024, will receive a 20% payout boost on their winnings. This promotion is valid for bets placed between 12:00 AM ET and 11:59 PM ET on July 4th, 2024. Terms and conditions apply."></textarea>
+            <button id="processBtn" onclick="processPromo()">🚀 Process Promo</button>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            ⏳ Processing your promo... This may take a moment.
+        </div>
+
+        <div id="results" class="results" style="display: none;">
+            <div class="result-section">
+                <h3>📊 Extracted Structured Data</h3>
+                <div id="structuredData" class="json-display"></div>
+            </div>
+
+            <div class="result-section">
+                <h3>🎨 Generated Template</h3>
+                <div id="templateData" class="template-display"></div>
+            </div>
+
+            <div class="result-section">
+                <h3>🌍 Translations</h3>
+                <div id="translationsData" class="json-display"></div>
+            </div>
+
+            <div class="result-section">
+                <h3>🔍 Similar Promos</h3>
+                <div id="similarData" class="json-display"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function processPromo() {
+            const promoText = document.getElementById('promoInput').value.trim();
+            if (!promoText) {
+                alert('⚠️ Please enter some promo text first!');
+                return;
+            }
+
+            const processBtn = document.getElementById('processBtn');
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+
+            processBtn.disabled = true;
+            loading.style.display = 'block';
+            results.style.display = 'none';
+
+            try {
+                const response = await fetch('/process-promo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ promoText })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('structuredData').textContent = JSON.stringify(data.structured, null, 2);
+                    document.getElementById('templateData').textContent = data.template;
+                    document.getElementById('translationsData').textContent = JSON.stringify(data.translations, null, 2);
+                    document.getElementById('similarData').textContent = JSON.stringify(data.similar, null, 2);
+                    results.style.display = 'block';
+                } else {
+                    alert('❌ Error: ' + data.error);
+                }
+            } catch (error) {
+                alert('❌ Error processing promo: ' + error.message);
+            } finally {
+                processBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

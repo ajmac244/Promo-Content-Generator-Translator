@@ -1,4 +1,4 @@
-# atlas-search-playground-chatbot-starter
+# Promo Content Generator & Translator
 
 This Node.js project contains scripts you can run or refer to as starter code for your chatbot application.
 
@@ -13,6 +13,15 @@ This Node.js project contains scripts you can run or refer to as starter code fo
 - An Anthropic API key. https://docs.anthropic.com/en/api/admin-api/apikeys/get-api-key
 
 Note: You may use alternate embeddings and LLM service providers given that you can implement them yourself in this starter code. 
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and fill in your own keys:
+
+```
+OPENAI_API_KEY=your-openai-key-here
+MONGODB_URI=your-mongodb-uri-here
+```
 
 ## Procedure
 

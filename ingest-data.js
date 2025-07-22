@@ -1,61 +1,54 @@
-import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
-import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
+import 'dotenv/config';
 import { MongoClient } from 'mongodb';
-import { getEmbeddings } from './get-embeddings.js';
-import { getEncoding } from 'js-tiktoken';
+import fs from 'fs';
 
-// Specify the pdf file name
-const PDF_FILE = `sample_pdf.pdf`;
+console.log('Script started');
+console.log('MONGODB_URI:', process.env.MONGODB_URI);
 
-// Specify the chunking params
-const CHUNK_SIZE = 250;
-const CHUNK_OVERLAP = 50;
-
-// Counts number of tokens in a given string.
-const encoding = getEncoding('gpt2');
-
-export const getTokenCount = (text) => {
-  return encoding.encode(text).length;
-};
+const MONGODB_URI = process.env.MONGODB_URI;
+const DATABASE_NAME = 'test'; // Change if you want a different DB
+const COLLECTION_NAME = 'promos'; // Change if you want a different collection
+const INPUT_FILE = 'legal-promo-examples.txt'; // Batch ingest from this file
 
 async function run() {
-  const client = new MongoClient(process.env.ATLAS_CONNECTION_STRING);
   try {
-    const loader = new PDFLoader(PDF_FILE);
-    const data = await loader.load();
-    // Chunk the text from the PDF
-    const textSplitter = new RecursiveCharacterTextSplitter({
-      chunkSize: CHUNK_SIZE,
-      chunkOverlap: CHUNK_OVERLAP,
-      lengthFunction: getTokenCount,
-    });
-    const docs = await textSplitter.splitDocuments(data);
-    console.log(`Successfully chunked the PDF into ${docs.length} documents.`);
-    // Connect to your Atlas cluster
+    // Read input file
+    console.log('Reading input file:', INPUT_FILE);
+    if (!fs.existsSync(INPUT_FILE)) {
+      console.error('Input file does not exist:', INPUT_FILE);
+      return;
+    }
+    const fileContents = fs.readFileSync(INPUT_FILE, 'utf-8');
+    // Split promos by double newlines (paragraphs)
+    const promos = fileContents.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+    console.log(`Found ${promos.length} promos to ingest.`);
+
+    // Connect to MongoDB
+    console.log('Connecting to MongoDB...');
+    const client = new MongoClient(MONGODB_URI);
     await client.connect();
-    const db = client.db("rag_db");
-    const collection = db.collection("test");
-    console.log("Clearing your collection of any pre-existing data.");
-    const deleteResult = await collection.deleteMany({});
-    console.log("Deleted " + deleteResult.deletedCount + " documents");
-    console.log("Generating embeddings and inserting documents...");
-    const embeddings = await getEmbeddings(docs.map(doc => doc.pageContent));
-    const insertDocuments = docs.map((doc, index) => ({
-      _id: index,
-      text: doc.pageContent,
-      vector_embeddings: embeddings[index],
-      page_number: doc.metadata.loc.pageNumber,
+    console.log('Connected to MongoDB');
+
+    const db = client.db(DATABASE_NAME);
+    const collection = db.collection(COLLECTION_NAME);
+
+    // Insert all promos
+    const docs = promos.map(promoText => ({
+      promoText,
+      insertedAt: new Date()
     }));
-    // Continue processing documents if an error occurs during an operation
-    const options = { ordered: false };
-    // Insert documents with embeddings into Atlas
-    const result = await collection.insertMany(insertDocuments, options);
-    console.log("Count of documents inserted: " + result.insertedCount);
-  } catch (err) {
-    console.log(err.stack);
-  }
-  finally {
+    const result = await collection.insertMany(docs);
+    console.log('Insert result:', result);
+
+    // Confirm inserted documents
+    const inserted = await collection.find({ _id: { $in: Object.values(result.insertedIds) } }).toArray();
+    console.log('Inserted documents:', inserted);
+
     await client.close();
+    console.log('Script finished');
+  } catch (err) {
+    console.error('Error during ingestion:', err);
   }
 }
-run().catch(console.dir);
+
+run();
